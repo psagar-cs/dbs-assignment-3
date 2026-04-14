@@ -4,9 +4,11 @@ import { BookCard } from "./book-card";
 export function SearchResults({
   results,
   savedKeys,
+  isSignedIn,
 }: {
   results: SearchResult[];
   savedKeys: Set<string>;
+  isSignedIn: boolean;
 }) {
   if (results.length === 0) {
     return (
@@ -23,6 +25,7 @@ export function SearchResults({
           key={book.key}
           book={book}
           isSaved={savedKeys.has(book.key)}
+          isSignedIn={isSignedIn}
         />
       ))}
     </div>

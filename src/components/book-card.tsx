@@ -9,15 +9,23 @@ import { addBook } from "@/app/actions";
 export function BookCard({
   book,
   isSaved,
+  isSignedIn,
 }: {
   book: SearchResult;
   isSaved: boolean;
+  isSignedIn: boolean;
 }) {
   const [saved, setSaved] = useState(isSaved);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleAdd() {
+    if (!isSignedIn) {
+      setError("Sign in to add books to your shelf");
+      return;
+    }
     setLoading(true);
+    setError(null);
     try {
       await addBook({
         open_library_key: book.key,
@@ -27,7 +35,7 @@ export function BookCard({
       });
       setSaved(true);
     } catch {
-      // Could show a toast here
+      setError("Failed to add book");
     } finally {
       setLoading(false);
     }
@@ -62,13 +70,20 @@ export function BookCard({
             On your shelf
           </span>
         ) : (
-          <button
-            onClick={handleAdd}
-            disabled={loading}
-            className="mt-2 w-fit rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
-          >
-            {loading ? "Adding..." : "Add to Shelf"}
-          </button>
+          <div>
+            <button
+              onClick={handleAdd}
+              disabled={loading}
+              className="mt-2 w-fit rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
+            >
+              {loading ? "Adding..." : "Add to Shelf"}
+            </button>
+            {error && (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                {error}
+              </p>
+            )}
+          </div>
         )}
       </div>
     </div>

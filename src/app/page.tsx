@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { auth } from "@clerk/nextjs/server";
 import { searchBooks } from "@/lib/open-library";
 import { getUserBookKeys } from "@/app/actions";
 import { SearchBar } from "@/components/search-bar";
@@ -11,6 +12,7 @@ export default async function Home({
 }) {
   const { q } = await searchParams;
 
+  const { userId } = await auth();
   const results = q ? await searchBooks(q) : [];
   const savedKeys = await getUserBookKeys();
 
@@ -29,7 +31,7 @@ export default async function Home({
 
       {q && (
         <div className="mt-8">
-          <SearchResults results={results} savedKeys={savedKeys} />
+          <SearchResults results={results} savedKeys={savedKeys} isSignedIn={!!userId} />
         </div>
       )}
     </div>
