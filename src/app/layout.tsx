@@ -33,6 +33,9 @@ export default function RootLayout({
         <ClerkProvider>
           <Header />
           <main className="flex-1">{children}</main>
+          <footer className="border-t border-card-border py-6 text-center text-sm text-muted">
+            <p>BookShelf &mdash; Powered by Open Library</p>
+          </footer>
         </ClerkProvider>
       </body>
     </html>

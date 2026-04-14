@@ -17,20 +17,25 @@ export default async function Home({
   const savedKeys = await getUserBookKeys();
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold">Find your next read</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
+    <div className="mx-auto w-full max-w-5xl px-4 py-12">
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl font-bold">Find your next read</h1>
+        <p className="mt-3 text-lg text-muted">
           Search millions of books and add them to your shelf.
         </p>
       </div>
 
-      <Suspense>
-        <SearchBar />
-      </Suspense>
+      <div className="mx-auto max-w-2xl">
+        <Suspense>
+          <SearchBar />
+        </Suspense>
+      </div>
 
       {q && (
-        <div className="mt-8">
+        <div className="mt-10">
+          <p className="mb-4 text-sm text-muted">
+            Showing results for &ldquo;{q}&rdquo;
+          </p>
           <SearchResults results={results} savedKeys={savedKeys} isSignedIn={!!userId} />
         </div>
       )}
